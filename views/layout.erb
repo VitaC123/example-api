@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/index.css">
+  </head>
+
+  <body class='layoutBody'>
+    <header>
+      <div class='jumbotron'>
+          <a class='headerText' href='/'><h1>Example API</h1></a>
+        <p class='lead text-muted'>A simple demo using Sinatra, Sequel, and PostgreSQL</p>
+      </div>
+    </header>
+
+    <main class='layoutContent'>
+      <div class='container'>
+        <%= yield %>
+      </div>
+    </main>
+
+    <footer class='layoutFooter text-center'>
+      <a href='https://github.com/VitaC123/example-api'>View source</a>
+    </footer>
+  </body>
+</html>
