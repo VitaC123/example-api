@@ -1,15 +1,23 @@
 require 'sinatra/base'
 require 'json'
+require_relative 'helpers.rb'
 
 class ExampleApi < Sinatra::Application
   use Rack::Deflater # Sets 'Content-Encodeing': 'gzip'
+  helpers QueryHelpers
+
+  before do
+    # If-Modified-Since Mon, 16 Dec 2017 22:09:00 GMT
+    puts headers
+  end
 
   get '/' do
     erb :index
   end
 
   get '/users' do
-    @users = JSON.pretty_generate(DB[:users].all)
+    @queryText = build_query_users(params)
+    @users = JSON.pretty_generate(DB.fetch(@queryText).all)
     erb :json_response
   end
 
