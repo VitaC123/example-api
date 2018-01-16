@@ -1,21 +1,25 @@
-module QueryHelpers
+require 'sinatra'
 
+module QueryHelpers
   def build_query_users(params)
-    queryText = "SELECT * FROM users"
+    queryText = 'SELECT * FROM users'
 
     if params[:sort_by]
-      queryText << " ORDER BY #{params[:sort_by]}"
+      sort_by = params[:sort_by]
+      queryText << ' ORDER BY '
+      if sort_by == 'releases'
+        queryText <<  'release_count'
+      else
+        queryText <<  sort_by
+      end
     end
 
-    if params[:limit]
-      queryText << " LIMIT #{params[:limit]}"
-    end
+    queryText << " LIMIT #{params[:limit]}" if params[:limit]
 
-    if params[:offset]
-      queryText << " OFFSET #{params[:offset]}"
-    end
+    queryText << " OFFSET #{params[:offset]}" if params[:offset]
 
     queryText
   end
-  
 end
+
+Sinatra::Application.helpers QueryHelpers
