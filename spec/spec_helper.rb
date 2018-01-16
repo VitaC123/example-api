@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear!
+
 require 'sequel'
 require 'json'
 require 'rspec'
