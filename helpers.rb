@@ -2,23 +2,18 @@ require 'sinatra'
 
 module QueryHelpers
   def build_query_users(params)
-    queryText = 'SELECT * FROM users'
+    query = DB[:users]
 
     if params[:sort_by]
-      sort_by = params[:sort_by]
-      queryText << ' ORDER BY '
-      if sort_by == 'releases'
-        queryText <<  'release_count'
-      else
-        queryText <<  sort_by
-      end
+      sort_by = if params[:sort_by] == 'releases' then 'release_count' else params[:sort_by] end
+      query = query.order(sort_by.to_sym)
     end
 
-    queryText << " LIMIT #{params[:limit]}" if params[:limit]
+    query = query.offset(params[:offset]) if params[:offset]
 
-    queryText << " OFFSET #{params[:offset]}" if params[:offset]
+    query = query.limit(params[:limit]) if params[:limit]
 
-    queryText
+    query
   end
 end
 
