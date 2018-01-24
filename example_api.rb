@@ -1,22 +1,18 @@
 require 'sinatra/base'
 require 'json'
 require_relative 'helpers.rb'
+require 'time'
 
 class ExampleApi < Sinatra::Application
   use Rack::Deflater # Sets 'Content-Encodeing': 'gzip'
   helpers QueryHelpers
-
-  before do
-    # If-Modified-Since Mon, 16 Dec 2017 22:09:00 GMT
-    puts headers
-  end
 
   get '/' do
     erb :index
   end
 
   get '/users' do
-    @queryText = build_query_users(params)
+    @queryText = build_query_users(params).sql
     @users = JSON.pretty_generate(DB.fetch(@queryText).all)
     erb :json_response
   end
@@ -28,7 +24,7 @@ class ExampleApi < Sinatra::Application
   end
 
   after do
-    headers['Date'] = Time.now.to_s
+    headers['Date'] = Time.now.httpdate
     headers['Cache-control'] = 'public, must-revalidate'
   end
 end
